@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic Tac Toe Game</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#43cea2,#185a9d);
+    font-family:Arial,sans-serif;
+}
+
+.game{
+    background:white;
+    padding:30px;
+    text-align:center;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+}
+
+h1{
+    color:#333;
+}
+
+.board{
+    display:grid;
+    grid-template-columns:repeat(3,100px);
+    gap:10px;
+    margin:20px auto;
+}
+
+.box{
+    width:100px;
+    height:100px;
+    background:#eee;
+    border-radius:10px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:40px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.box:hover{
+    background:#ddd;
+}
+
+#status{
+    font-size:20px;
+    margin:15px;
+    font-weight:bold;
+}
+
+button{
+    padding:10px 25px;
+    border:none;
+    background:#185a9d;
+    color:white;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#0d3d6b;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="game">
+    <h1>Tic Tac Toe</h1>
+
+    <div class="board">
+        <div class="box" onclick="move(this)"></div>
+        <div class="box" onclick="move(this)"></div>
+        <div class="box" onclick="move(this)"></div>
+        <div class="box" onclick="move(this)"></div>
+        <div class="box" onclick="move(this)"></div>
+        <div class="box" onclick="move(this)"></div>
+        <div class="box" onclick="move(this)"></div>
+        <div class="box" onclick="move(this)"></div>
+        <div class="box" onclick="move(this)"></div>
+    </div>
+
+    <div id="status">Player X Turn</div>
+
+    <button onclick="resetGame()">Restart</button>
+</div>
+
+
+<script>
+let currentPlayer="X";
+let boxes=document.querySelectorAll(".box");
+let status=document.getElementById("status");
+let gameActive=true;
+
+let win=[
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
+];
+
+function move(box){
+    if(box.innerHTML=="" && gameActive){
+        box.innerHTML=currentPlayer;
+
+        if(checkWin()){
+            status.innerHTML="Player "+currentPlayer+" Wins!";
+            gameActive=false;
+        }
+        else if([...boxes].every(b=>b.innerHTML!="")){
+            status.innerHTML="Match Draw!";
+            gameActive=false;
+        }
+        else{
+            currentPlayer=currentPlayer=="X"?"O":"X";
+            status.innerHTML="Player "+currentPlayer+" Turn";
+        }
+    }
+}
+
+function checkWin(){
+    return win.some(pattern=>{
+        return pattern.every(i=>{
+            return boxes[i].innerHTML==currentPlayer;
+        });
+    });
+}
+
+function resetGame(){
+    boxes.forEach(box=>box.innerHTML="");
+    currentPlayer="X";
+    gameActive=true;
+    status.innerHTML="Player X Turn";
+}
+</script>
+
+</body>
+</html>
