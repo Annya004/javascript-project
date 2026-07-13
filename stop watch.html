@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stopwatch</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+    }
+
+    .container {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    #display {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 30px;
+        color: #222;
+    }
+
+    button {
+        padding: 12px 20px;
+        margin: 5px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        color: white;
+        transition: 0.3s;
+    }
+
+    #start {
+        background: #28a745;
+    }
+
+    #pause {
+        background: #ffc107;
+        color: black;
+    }
+
+    #reset {
+        background: #dc3545;
+    }
+
+    button:hover {
+        opacity: 0.9;
+        transform: scale(1.05);
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>⏱ Stopwatch</h1>
+
+    <div id="display">00:00:00</div>
+
+    <button id="start">Start</button>
+    <button id="pause">Pause</button>
+    <button id="reset">Reset</button>
+</div>
+
+<script>
+let seconds = 0;
+let minutes = 0;
+let hours = 0;
+
+let timer = null;
+
+function updateDisplay() {
+    const h = String(hours).padStart(2, "0");
+    const m = String(minutes).padStart(2, "0");
+    const s = String(seconds).padStart(2, "0");
+
+    document.getElementById("display").textContent = `${h}:${m}:${s}`;
+}
+
+function stopwatch() {
+    seconds++;
+
+    if (seconds === 60) {
+        seconds = 0;
+        minutes++;
+    }
+
+    if (minutes === 60) {
+        minutes = 0;
+        hours++;
+    }
+
+    updateDisplay();
+}
+
+document.getElementById("start").addEventListener("click", () => {
+    if (timer !== null) return; // Prevent multiple timers
+    timer = setInterval(stopwatch, 1000);
+});
+
+document.getElementById("pause").addEventListener("click", () => {
+    clearInterval(timer);
+    timer = null;
+});
+
+document.getElementById("reset").addEventListener("click", () => {
+    clearInterval(timer);
+    timer = null;
+    hours = 0;
+    minutes = 0;
+    seconds = 0;
+    updateDisplay();
+});
+
+updateDisplay();
+</script>
+
+</body>
+</html>
